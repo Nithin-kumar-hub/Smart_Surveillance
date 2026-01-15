@@ -1,0 +1,729 @@
+/**
+ * style.css
+ * Main stylesheet for Smart Surveillance Dashboard
+ */
+
+/* ==================== */
+/* CSS Variables */
+/* ==================== */
+:root {
+    --primary-color: #2c3e50;
+    --primary-dark: #1a252f;
+    --secondary-color: #34495e;
+    --danger-color: #e74c3c;
+    --danger-dark: #c0392b;
+    --success-color: #27ae60;
+    --success-dark: #229954;
+    --warning-color: #f39c12;
+    --warning-dark: #e67e22;
+    --info-color: #3498db;
+    --info-dark: #2980b9;
+    --light-bg: #f5f6fa;
+    --white: #ffffff;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.3s;
+}
+
+/* ==================== */
+/* Global Styles */
+/* ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--gray-900);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-200);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray-400);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-500);
+}
+
+/* ==================== */
+/* Navbar */
+/* ==================== */
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color), var(--info-color)) !important;
+    box-shadow: var(--shadow-md);
+    padding: 0.75rem 1rem;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--white) !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.navbar-brand i {
+    font-size: 1.75rem;
+}
+
+.navbar-brand:hover {
+    color: var(--gray-200) !important;
+}
+
+/* ==================== */
+/* Sidebar */
+/* ==================== */
+.sidebar {
+    background-color: var(--white);
+    height: calc(100vh - 56px);
+    overflow-y: auto;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 56px;
+}
+
+.sidebar h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 0.75rem;
+}
+
+/* ==================== */
+/* Camera Grid */
+/* ==================== */
+.camera-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    padding: 24px;
+}
+
+@media (max-width: 768px) {
+    .camera-grid {
+        grid-template-columns: 1fr;
+        padding: 16px;
+        gap: 16px;
+    }
+}
+
+/* ==================== */
+/* Camera Card */
+/* ==================== */
+.camera-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+}
+
+.camera-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+}
+
+.camera-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--info-color), var(--primary-color));
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+
+.camera-card:hover::before {
+    opacity: 1;
+}
+
+/* Camera Header */
+.camera-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+    color: var(--white);
+    padding: 14px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.camera-header h6 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.camera-header small {
+    opacity: 0.9;
+    font-size: 0.85rem;
+}
+
+/* Camera Feed */
+.camera-feed {
+    width: 100%;
+    height: 320px;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.camera-feed img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform var(--transition-speed);
+}
+
+.camera-feed:hover img {
+    transform: scale(1.02);
+}
+
+.camera-feed.loading::after {
+    content: 'Loading...';
+    position: absolute;
+    color: var(--white);
+    font-size: 1.2rem;
+}
+
+/* Camera offline state */
+.camera-offline {
+    background: var(--gray-800);
+    color: var(--gray-400);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.camera-offline i {
+    font-size: 3rem;
+    opacity: 0.5;
+}
+
+/* Camera Status */
+.camera-status {
+    padding: 14px 18px;
+    border-top: 1px solid var(--gray-200);
+    background: var(--gray-100);
+}
+
+.camera-status small {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+}
+
+/* ==================== */
+/* Alert Badge on Camera */
+/* ==================== */
+.alert-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--danger-color);
+    color: var(--white);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+    animation: pulse 1.5s infinite;
+    z-index: 10;
+}
+
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+/* ==================== */
+/* Status Badges */
+/* ==================== */
+.badge-status {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-online {
+    background: var(--success-color);
+    color: var(--white);
+}
+
+.badge-offline {
+    background: var(--gray-500);
+    color: var(--white);
+}
+
+.badge-recording {
+    background: var(--danger-color);
+    color: var(--white);
+    animation: blink 2s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0.5; }
+}
+
+/* ==================== */
+/* Alerts List */
+/* ==================== */
+#alertsList {
+    transition: opacity 0.2s ease;
+}
+
+.alert-item {
+    background: var(--white);
+    border-left: 4px solid var(--danger-color);
+    border-radius: 6px;
+    padding: 14px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-sm);
+    animation: slideIn 0.4s ease-out;
+    transition: all var(--transition-speed);
+    will-change: transform, opacity;
+}
+
+.alert-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(4px);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Severity-based alert styling */
+.alert-item.severity-HIGH {
+    border-left-color: var(--danger-color);
+    background: linear-gradient(to right, #ffe5e5, var(--white));
+}
+
+.alert-item.severity-MEDIUM {
+    border-left-color: var(--warning-color);
+    background: linear-gradient(to right, #fff4e5, var(--white));
+}
+
+.alert-item.severity-LOW {
+    border-left-color: var(--info-color);
+    background: linear-gradient(to right, #e5f4ff, var(--white));
+}
+
+.alert-item strong {
+    color: var(--primary-color);
+}
+
+.alert-item .badge {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+}
+
+/* ==================== */
+/* Statistics Cards */
+/* ==================== */
+.stats-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-speed);
+    border-left: 4px solid var(--info-color);
+}
+
+.stats-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    color: var(--gray-600);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    color: var(--info-color);
+    opacity: 0.8;
+}
+
+/* ==================== */
+/* No Cameras State */
+/* ==================== */
+.no-cameras {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--gray-600);
+    background: var(--white);
+    border-radius: 12px;
+    margin: 24px;
+    box-shadow: var(--shadow-sm);
+}
+
+.no-cameras i {
+    font-size: 5rem;
+    color: var(--gray-300);
+    margin-bottom: 24px;
+    display: block;
+}
+
+.no-cameras h5 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+}
+
+.no-cameras p {
+    font-size: 1rem;
+    margin-bottom: 24px;
+}
+
+/* ==================== */
+/* Buttons */
+/* ==================== */
+.btn {
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 500;
+    transition: all var(--transition-speed);
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--info-color), var(--info-dark));
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--info-dark), var(--info-color));
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger-color), var(--danger-dark));
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, var(--danger-dark), var(--danger-color));
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color), var(--success-dark));
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, var(--success-dark), var(--success-color));
+}
+
+/* ==================== */
+/* Modal Improvements */
+/* ==================== */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+    color: var(--white);
+    border-radius: 12px 12px 0 0;
+    padding: 1.25rem 1.5rem;
+}
+
+.modal-header .btn-close {
+    filter: brightness(0) invert(1);
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--gray-200);
+    padding: 1rem 1.5rem;
+}
+
+/* ==================== */
+/* Form Improvements */
+/* ==================== */
+.form-label {
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 0.5rem;
+}
+
+.form-control, .form-select {
+    border: 2px solid var(--gray-300);
+    border-radius: 6px;
+    padding: 0.6rem 0.9rem;
+    transition: all var(--transition-speed);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--info-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.15);
+}
+
+/* ==================== */
+/* Connection Status Badge */
+/* ==================== */
+#connectionStatus {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#connectionStatus i {
+    font-size: 1rem;
+}
+
+/* ==================== */
+/* Alert Count Badge */
+/* ==================== */
+#alertCount {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    min-width: 24px;
+    text-align: center;
+}
+
+/* ==================== */
+/* Loading Spinner */
+/* ==================== */
+.spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* ==================== */
+/* Toast Notifications */
+/* ==================== */
+.toast-container {
+    z-index: 99999;
+}
+
+.toast {
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+}
+
+.toast-body {
+    padding: 1rem;
+    font-weight: 500;
+}
+
+/* ==================== */
+/* Chart Container */
+/* ==================== */
+.chart-container {
+    position: relative;
+    height: 400px;
+    padding: 20px;
+    background: var(--white);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+/* ==================== */
+/* Analytics Modal */
+/* ==================== */
+#analyticsModal .modal-dialog {
+    max-width: 1200px;
+}
+
+#analyticsModal .card {
+    border: none;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-speed);
+}
+
+#analyticsModal .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+#analyticsModal .card-body {
+    padding: 1.5rem;
+}
+
+#analyticsModal .card h3 {
+    margin: 0;
+    font-weight: 700;
+}
+
+#analyticsModal .btn-group .btn {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
+
+#analyticsModal .btn-group .btn.active {
+    background: var(--info-color);
+    color: var(--white);
+    border-color: var(--info-color);
+}
+
+#analyticsModal canvas {
+    max-height: 400px;
+}
+
+/* ==================== */
+/* Utility Classes */
+/* ==================== */
+.text-muted-custom {
+    color: var(--gray-500) !important;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--info-color));
+}
+
+.bg-gradient-danger {
+    background: linear-gradient(135deg, var(--danger-color), var(--warning-color));
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, var(--success-color), var(--info-color));
+}
+
+.shadow-custom {
+    box-shadow: var(--shadow-md);
+}
+
+/* ==================== */
+/* Responsive Design */
+/* ==================== */
+@media (max-width: 992px) {
+    .sidebar {
+        height: auto;
+        position: relative;
+    }
+    
+    .camera-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .camera-feed {
+        height: 240px;
+    }
+}
+
+/* ==================== */
+/* Print Styles */
+/* ==================== */
+@media print {
+    .navbar, .sidebar, .btn {
+        display: none !important;
+    }
+    
+    .camera-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
