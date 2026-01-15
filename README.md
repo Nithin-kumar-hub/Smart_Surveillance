@@ -37,8 +37,7 @@ Requirements
   - OpenCV (cv2)
   - PyTorch or TensorFlow (depending on chosen detection model)
   - numpy, requests, pyyaml (and other utilities)
-- Optional: Docker (for containerized deployment)
-
+    
 Quick start (local)
 1. Clone the repository:
    ```
